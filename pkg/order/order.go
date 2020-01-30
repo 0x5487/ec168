@@ -34,6 +34,7 @@ type Order struct {
 	Type            Type   // 1: 正常訂單 2:活動
 	OrderNO         string `json:"order_no" db:"order_no"`
 	MerchantID      int32
+	AgentID         int32
 	MemberID        int32 `json:"member_id" db:"member_id"`
 	Member          string
 	GameID          int64
@@ -65,6 +66,7 @@ type LineItemStatus int32
 var (
 	LineItemUnseattled LineItemStatus = 1
 	LineItemSeattled   LineItemStatus = 2
+	LineItemCancelled  LineItemStatus = 3
 )
 
 type LineItem struct {
@@ -75,6 +77,7 @@ type LineItem struct {
 	Market          string
 	Outcome         string
 	Odds            int32
+	Status          LineItemStatus
 	BetAmount       int64 `json:"bet_amount" db:"bet_amount"`
 	JackpotAmount   int64
 	ValidBetAmount  int64     `json:"valid_bet_amount" db:"valid_bet_amount"`

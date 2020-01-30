@@ -2,6 +2,16 @@ package sport
 
 import "time"
 
+type MatchStatus int32
+
+type Match struct {
+	ID        string
+	GameID    int64
+	Status    MatchStatus
+	CreatedAt time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
+}
+
 type MarketStatus int32
 
 const (
@@ -12,16 +22,6 @@ const (
 	SUSPENDED MarketStatus = 3
 	SETTLED   MarketStatus = 4
 )
-
-type MatchStatus int32
-
-type Match struct {
-	ID        string
-	GameID    int64
-	Status    MatchStatus
-	CreatedAt time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
-}
 
 type Market struct {
 	ID              string
@@ -52,6 +52,6 @@ type FindOutcomeOptions struct {
 
 type MarketServicer interface {
 	Markets() ([]Market, error)
-	GetOutcomeSettlements(marketID int64) ([]Outcome, error)
+	SeattleMarket(marketID int64) (Order.Settlement, error)
 	Outcomes() ([]Outcome, error)
 }

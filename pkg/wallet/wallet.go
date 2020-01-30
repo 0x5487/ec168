@@ -5,7 +5,7 @@ import (
 )
 
 type Wallet struct {
-	ID         int64
+	ID         string
 	MerchantID int32
 	MemberID   int32 `json:"member_id" db:"member_id"`
 	Member     string
@@ -14,6 +14,12 @@ type Wallet struct {
 	Note       string
 	CreatedAt  time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt  time.Time `json:"updated_at" db:"updated_at"`
+}
+
+type Servicer interface {
+	CreateWallet(memberID int32, currency int32) error
+	Withdraw(walletID string, amount int64, allowNegative bool, note string) error
+	Deposit(walletID string, amount int64, note string) error
 }
 
 type TransactionType int32
@@ -30,8 +36,8 @@ var (
 )
 
 type Transaction struct {
-	ID           int64
-	WalletID     int64
+	ID           string
+	WalletID     string
 	TransUUID    string
 	MerchantID   int32
 	MemberID     int32
@@ -46,12 +52,6 @@ type Transaction struct {
 	Summary      string
 	Note         string
 	CreatedAt    time.Time `json:"created_at" db:"created_at"`
-}
-
-type Servicer interface {
-	CreateWallet(memberID int32, currency int32) error
-	Withdraw(memberID int32, currency int32, amount int64, allowNegative bool, note string) error
-	Deposit(memberID int32, currency int32, amount int64, note string) error
 }
 
 type TransactionRepository interface {
